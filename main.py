@@ -1,3 +1,26 @@
 import src.descriptive_statistics as ds
 
-print(ds.moment([12, 14, 14, 17, 18], 2))
+data_1 = [ 12, 14, 14, 17, 18 ]
+data_2 = [ 15, 15, 15, 15, 15 ]
+
+print(ds.moment(data_1, k=1))
+print(ds.moment(data_1, k=2))
+print(ds.moment(data_1, k=3))
+print(ds.moment(data_1, k=4))
+print()
+print(ds.raw_moment(data_1, k=1))
+print(ds.raw_moment(data_1, k=2))
+print(ds.raw_moment(data_1, k=3))
+print(ds.raw_moment(data_1, k=4))
+print()
+print(ds.centralised_moment(data_1, k=2))
+print(ds.centralised_moment(data_1, k=3))
+print(ds.centralised_moment(data_1, k=4))
+print()
+print(ds.standardised_moment(data_1, k=3))
+print(ds.standardised_moment(data_1, k=4))
+
+print(ds.raw_moment(data_1, k=1), '=', ds.mean(data_1))
+print(ds.centralised_moment(data_1, k=2), '=', ds.variance(data_1, from_sample=False))
+print(ds.standardised_moment(data_1, k=3), '=', ds.skewness(data_1, from_sample=False))
+print(ds.standardised_moment(data_1, k=4), '=', ds.kurtosis(data_1, from_sample=False))
