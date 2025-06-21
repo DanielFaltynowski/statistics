@@ -169,3 +169,18 @@ def mode(data: list[float]) -> float:
         return modes
     else:
         return mode
+
+
+def data_range(data: list[float]) -> tuple[float]:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `data_range(data)`')
+            return None
+    min_value = data[0]
+    max_value = data[0]
+    for datum in data:
+        if datum < min_value:
+            min_value = datum
+        if datum > max_value:
+            max_value = datum
+    return (min_value, max_value)

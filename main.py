@@ -27,3 +27,4 @@ print(ds.standardised_moment(data_1, k=4), '=', ds.kurtosis(data_1, from_sample=
 print()
 print(ds.median([3, 1, 2, 4]))
 print(ds.mode([1, 2, '3']))
+print(ds.data_range([11.5, 2, 1, 7, 3.9, 2.3, 10.3, 6.9]))
