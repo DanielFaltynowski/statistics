@@ -1,4 +1,8 @@
 def moment( data: list[ float ], centralisation: float = 0, standardisation: float = 1, k: int = 1 ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `moment(data)`')
+            return None
     denominator = len( data )
     nominator = 0
     for datum in data:
@@ -26,6 +30,7 @@ def centralised_moment( data: list[ float ], k: int = 1 ) -> float:
         k = k
     )
 
+
 def standardised_moment( data: list[ float ], k: int = 1 ) -> float:
     return moment(
         data = data,
@@ -42,6 +47,10 @@ def standardised_moment( data: list[ float ], k: int = 1 ) -> float:
 
 
 def mean( data: list[ float ] ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `mean(data)`')
+            return None
     length = len( data )
     denominator = length
     nominator = 0
@@ -51,6 +60,10 @@ def mean( data: list[ float ] ) -> float:
 
 
 def variance( data: list[ float ], from_sample = True ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `variance(data)`')
+            return None
     length = len( data )
     denominator = length
     data_mean = mean( data )
@@ -70,6 +83,10 @@ def standard_deviation( data: list[ float ], from_sample = True ) -> float:
 
 
 def skewness( data: list[ float ], from_sample = True ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `skewness(data)`')
+            return None
     length = len( data )
     denominator = standard_deviation(
         data = data,
@@ -88,6 +105,10 @@ def skewness( data: list[ float ], from_sample = True ) -> float:
 
 
 def kurtosis( data: list[ float ], from_sample = True ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `kurtosis(data)`')
+            return None
     length = len( data )
     denominator = standard_deviation(
         data = data,
@@ -106,3 +127,45 @@ def kurtosis( data: list[ float ], from_sample = True ) -> float:
         denominator = denominator * len( data )
     return ( nominator / denominator ) - substractor
     
+
+def median(data: list[float]) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `median(data)`')
+            return None
+    data_sorted = data[ : ]
+    data_sorted.sort()
+    last_index = len( data ) - 1
+    if last_index % 2 == 0:
+        return data_sorted[ last_index // 2 ]
+    else:
+        first_point = data_sorted[ last_index // 2 ]
+        second_point = data_sorted[ last_index // 2 + 1 ]
+        return ( first_point + second_point ) / 2
+
+
+def mode(data: list[float]) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `mode(data)`')
+            return None
+    memory = {}
+    for datum in data:
+        if datum in memory:
+            memory[datum] = memory[datum] + 1
+        else:
+            memory[datum] = 1
+    mode = None
+    max_amount = 0
+    for value, amount in memory.items():
+        if amount > max_amount:
+            max_amount = amount
+            mode = value
+    modes = []
+    for value, amount in memory.items():
+        if amount == max_amount:
+            modes.append( value )
+    if len(modes) > 1:
+        return modes
+    else:
+        return mode
