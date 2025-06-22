@@ -277,7 +277,7 @@ def weighted_skewness( data: list[ float ], weights: list[int], from_sample = Tr
         return nominator / denominator
 
 
-def weighted_kurtosis( data: list[ float ], weights: list[int],, from_sample = True ) -> float:
+def weighted_kurtosis( data: list[ float ], weights: list[int], from_sample = True ) -> float:
     for datum in data:
         if not isinstance(datum, (int, float)):
             print('Invalid input: `skewness(data)`')
