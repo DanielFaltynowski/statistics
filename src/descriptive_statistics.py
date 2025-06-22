@@ -225,7 +225,6 @@ def weighted_variance( data: list[ float ], weights: list[int], from_sample = Tr
     data_mean = weighted_mean( 
         data = data,
         weights = weights,
-        from_sample = from_sample
      )
     if from_sample:
         denominator = denominator - ( squared_weights_sum / weights_sum )
