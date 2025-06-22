@@ -61,7 +61,7 @@ def mean( data: list[ float ] ) -> float:
     return nominator / denominator
 
 
-def variance( data: list[ float ], from_sample = True ) -> float:
+def variance( data: list[ float ], from_sample: bool = True ) -> float:
     for datum in data:
         if not isinstance(datum, (int, float)):
             print('Invalid input: `variance(data)`')
@@ -77,14 +77,14 @@ def variance( data: list[ float ], from_sample = True ) -> float:
     return nominator / denominator
 
 
-def standard_deviation( data: list[ float ], from_sample = True ) -> float:
+def standard_deviation( data: list[ float ], from_sample: bool = True ) -> float:
     return variance( 
         data = data,
         from_sample = from_sample
      ) ** 0.5
 
 
-def skewness( data: list[ float ], from_sample = True ) -> float:
+def skewness( data: list[ float ], from_sample: bool = True ) -> float:
     for datum in data:
         if not isinstance(datum, (int, float)):
             print('Invalid input: `skewness(data)`')
@@ -106,7 +106,7 @@ def skewness( data: list[ float ], from_sample = True ) -> float:
     return nominator / denominator
 
 
-def kurtosis( data: list[ float ], from_sample = True ) -> float:
+def kurtosis( data: list[ float ], from_sample: bool = True ) -> float:
     for datum in data:
         if not isinstance(datum, (int, float)):
             print('Invalid input: `kurtosis(data)`')
@@ -128,6 +128,13 @@ def kurtosis( data: list[ float ], from_sample = True ) -> float:
     else:
         denominator = denominator * len( data )
     return ( nominator / denominator ) - substractor
+
+
+def excess_kurtosis( data: list[ float ], from_sample: bool = True ) -> float:
+    return kurtosis(
+        data = data,
+        from_sample = from_sample
+    ) - 3
     
 
 def median(data: list[float]) -> float:
@@ -206,14 +213,14 @@ def weighted_mean( data: list[ float ], weights: list[int] ) -> float:
     return nominator / denominator
 
 
-def weighted_variance( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+def weighted_variance( data: list[ float ], weights: list[int], from_sample: bool = True ) -> float:
     for datum in data:
         if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
-            print('Invalid input: `weighted_mean(data)`')
+            print('Invalid input: `weighted_variance(data)`')
             return None
     for weight in weights:
         if not ( isinstance(weight, (int, float)) and weight >= 0 ):
-            print('Invalid input: `weighted_mean(data)`')
+            print('Invalid input: `weighted_variance(data)`')
             return None
     length = len( data )
     weights_sum = 0
@@ -234,7 +241,7 @@ def weighted_variance( data: list[ float ], weights: list[int], from_sample = Tr
     return nominator / denominator
 
 
-def weighted_standard_deviation( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+def weighted_standard_deviation( data: list[ float ], weights: list[int], from_sample: bool = True ) -> float:
     return weighted_variance( 
         data = data,
         weights = weights,
@@ -242,10 +249,14 @@ def weighted_standard_deviation( data: list[ float ], weights: list[int], from_s
      ) ** 0.5
 
 
-def weighted_skewness( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+def weighted_skewness( data: list[ float ], weights: list[int], from_sample: bool = True ) -> float:
     for datum in data:
-        if not isinstance(datum, (int, float)):
-            print('Invalid input: `skewness(data)`')
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_skewness(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_skewness(data)`')
             return None
     length = len( data )
     weights_sum = 0
@@ -276,10 +287,14 @@ def weighted_skewness( data: list[ float ], weights: list[int], from_sample = Tr
         return nominator / denominator
 
 
-def weighted_kurtosis( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+def weighted_kurtosis( data: list[ float ], weights: list[int], from_sample: bool = True ) -> float:
     for datum in data:
-        if not isinstance(datum, (int, float)):
-            print('Invalid input: `skewness(data)`')
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_kurtosis(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_kurtosis(data)`')
             return None
     length = len( data )
     weights_sum = 0
@@ -308,3 +323,60 @@ def weighted_kurtosis( data: list[ float ], weights: list[int], from_sample = Tr
         ) - 3) +3 ) * ( weights_sum / ( weights_sum - ( squared_weights_sum / weights_sum ) ) )
     else:
         return nominator / denominator
+
+
+def weighted_excess_kurtosis( data: list[ float ], weights: list[int], from_sample: bool = True ) -> float:
+    return weighted_kurtosis(
+        data = data,
+        weights = weights,
+        from_sample = from_sample
+    ) - 3
+
+
+def weighted_median(data: list[float], weights: list[float]) -> float:
+    for datum in data:
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_kurtosis(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_kurtosis(data)`')
+            return None
+    sorted_pairs = sorted(zip(data, weights), key=lambda x: x[0])
+    total_weight = 0
+    for weight in weights:
+        total_weight = total_weight + weight
+    half_weight = total_weight / 2
+    cumulative_weight = 0
+    for value, weight in sorted_pairs:
+        cumulative_weight = cumulative_weight + weight
+        if cumulative_weight >= half_weight:
+            return value
+    return None
+
+
+
+def weighted_mode(data: list[float], weights: list[int]) -> float:
+    for datum in data:
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_mode(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_mode(data)`')
+            return None
+    length = len(data)
+    mode = data[0]
+    weight = weights[0]
+    for i in range(length):
+        if weights[i] > weight:
+            mode = data[i]
+            weight = weights[i]
+    modes = []
+    for i in range(length):
+        if weights[i] == weight:
+            modes.append(data[i])
+    if len(modes) > 1:
+        return modes
+    else:
+        return mode
