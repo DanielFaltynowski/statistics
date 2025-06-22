@@ -10,9 +10,9 @@ The purpose of this task is to verify whether this perceived generational divisi
 
 You are provided with CSV files containing demographic data for three regions: the entire United States, the state of California, and the state of Tennessee. These files include information about the population structure by age and sex.
 
-Start by loading each dataset using the `pandas` library. Process the data to extract the age and sex distribution for each region. Once you’ve cleaned and structured the data, visualize the age distribution using `matplotlib` and your own custom Python library for statistical visualization or processing.
+Start by loading each dataset using the `pandas` library. Process the data to extract the age and sex distribution for each region. Once you’ve cleaned and structured the data, visualize the age distribution using `matplotlib`.
 
-Then, perform a descriptive statistical analysis of each region. For each dataset, compute core statistical metrics that describe the distribution of ages. This includes measures of central tendency (mean, median, mode), dispersion (range, variance, standard deviation), and distribution shape (skewness, kurtosis).
+Then, your own custom Python library to perform a descriptive statistical analysis of each region. For each dataset, compute core statistical metrics that describe the distribution of ages. This includes measures of central tendency (mean, median, mode), dispersion (range, variance, standard deviation), and distribution shape (skewness, kurtosis).
 
 All of your analysis and visualizations should be clearly structured and reproducible in code. You are encouraged to compare the age profiles between California and Tennessee to explore whether the assumptions about their populations — California being "younger", Tennessee being "older" — are supported by actual data patterns.
 

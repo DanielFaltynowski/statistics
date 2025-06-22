@@ -1,49 +1,51 @@
-def moment( data: list[ float ], centralisation: float = 0, standardisation: float = 1, k: int = 1 ) -> float:
+def moment(data: list[float], order: int = 1, delta_degrees_of_freedom: int = 0) -> float:
     for datum in data:
         if not isinstance(datum, (int, float)):
             print('Invalid input: `moment(data)`')
             return None
-    denominator = len( data )
+    degrees_of_freedom = len(data) - delta_degrees_of_freedom
+    denominator = degrees_of_freedom
     nominator = 0
     for datum in data:
-        nominator = nominator + ( ( ( datum - centralisation ) / standardisation ) ** k )
+        nominator = nominator + ( datum ** order )
     return nominator / denominator
 
 
-def raw_moment( data: list[ float ], k: int = 1 ) -> float:
-    return moment(
+def centralised_moment(data: list[float], order: int = 1, delta_degrees_of_freedom: int = 0) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `centralised_moment(data)`')
+            return None
+    degrees_of_freedom = len(data) - delta_degrees_of_freedom
+    data_mean = moment(
         data = data,
-        centralisation = 0,
-        standardisation = 1,
-        k = k
     )
+    denominator = degrees_of_freedom
+    nominator = 0
+    for datum in data:
+        nominator = nominator + ( ( datum - data_mean ) ** order )
+    return nominator / denominator
 
 
-def centralised_moment( data: list[ float ], k: int = 1 ) -> float:
-    return moment(
+def standardised_moment(data: list[float], order: int = 1, delta_degrees_of_freedom: int = 0) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `standardised_moment(data)`')
+            return None
+    degrees_of_freedom = len(data) - delta_degrees_of_freedom
+    data_mean = moment(
         data = data,
-        centralisation = raw_moment(
-            data = data,
-            k = 1
-        ),
-        standardisation = 1,
-        k = k
     )
-
-
-def standardised_moment( data: list[ float ], k: int = 1 ) -> float:
-    return moment(
+    data_sd = centralised_moment(
         data = data,
-        centralisation = raw_moment(
-            data = data,
-            k = 1
-        ),
-        standardisation = centralised_moment(
-            data = data,
-            k = 2
-        ) ** 0.5,
-        k = k
-    )
+        order = 2,
+        delta_degrees_of_freedom = delta_degrees_of_freedom
+    ) ** 0.5
+    denominator = degrees_of_freedom
+    nominator = 0
+    for datum in data:
+        nominator = nominator + ( ( ( datum - data_mean ) ** order ) / ( data_sd ** order ) )
+    return nominator / denominator
 
 
 def mean( data: list[ float ] ) -> float:
@@ -98,7 +100,7 @@ def skewness( data: list[ float ], from_sample = True ) -> float:
         nominator = nominator + ( ( datum - data_mean ) ** 3 )
     if from_sample:
         nominator = nominator * length
-        denominator = ( length - 1 ) * ( length - 2 )
+        denominator = denominator * ( length - 1 ) * ( length - 2 )
     else:
         denominator = denominator * length
     return nominator / denominator
@@ -121,7 +123,7 @@ def kurtosis( data: list[ float ], from_sample = True ) -> float:
     substractor = 0
     if from_sample:
         nominator = nominator * length * ( length + 1 )
-        denominator = ( length - 1 ) * ( length - 2 ) * ( length - 3 )
+        denominator = denominator * ( length - 1 ) * ( length - 2 ) * ( length - 3 )
         substractor = ( ( 3 * ( ( length - 1 ) ** 2 ) ) / ( ( length - 2 ) * ( length - 3 ) ) )
     else:
         denominator = denominator * len( data )
@@ -184,3 +186,126 @@ def data_range(data: list[float]) -> tuple[float]:
         if datum > max_value:
             max_value = datum
     return (min_value, max_value)
+
+
+def weighted_mean( data: list[ float ], weights: list[int] ) -> float:
+    for datum in data:
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_mean(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_mean(data)`')
+            return None
+    length = len( data )
+    denominator = 0
+    nominator = 0
+    for i in range(length):
+        nominator = nominator + ( data[i] * weights[i] )
+        denominator = denominator + weights[i]
+    return nominator / denominator
+
+
+def weighted_variance( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+    for datum in data:
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_mean(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_mean(data)`')
+            return None
+    length = len( data )
+    weights_sum = 0
+    squared_weights_sum = 0
+    for i in range(length):
+        weights_sum = weights_sum + weights[i]
+        squared_weights_sum = squared_weights_sum + ( weights[i] ** 2 )
+    denominator = weights_sum
+    data_mean = weighted_mean( 
+        data = data,
+        weights = weights,
+        from_sample = from_sample
+     )
+    if from_sample:
+        denominator = denominator - ( squared_weights_sum / weights_sum )
+    nominator = 0
+    for i in range(length):
+        nominator = nominator + weights[i] * ( ( data[i] - data_mean ) ** 2 )
+    return nominator / denominator
+
+
+def weighted_standard_deviation( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+    return weighted_variance( 
+        data = data,
+        weights = weights,
+        from_sample = from_sample
+     ) ** 0.5
+
+
+def weighted_skewness( data: list[ float ], weights: list[int], from_sample = True ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `skewness(data)`')
+            return None
+    length = len( data )
+    weights_sum = 0
+    squared_weights_sum = 0
+    for i in range(length):
+        weights_sum = weights_sum + weights[i]
+        squared_weights_sum = squared_weights_sum + ( weights[i] ** 2 )
+    denominator = weighted_standard_deviation(
+        data = data,
+        weights = weights,
+        from_sample = from_sample
+    ) ** 3
+    denominator = denominator * weights_sum
+    data_mean = weighted_mean( 
+        data = data,
+        weights = weights
+     )
+    nominator = 0
+    for i in range(length):
+        nominator = nominator + weights[i] * ( ( data[i] - data_mean ) ** 3 )
+    if from_sample:
+        return weighted_skewness(
+            data = data,
+            weights = weights,
+            from_sample = False
+        ) * ( weights_sum / ( weights_sum - ( squared_weights_sum / weights_sum ) ) )
+    else:
+        return nominator / denominator
+
+
+def weighted_kurtosis( data: list[ float ], weights: list[int],, from_sample = True ) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `skewness(data)`')
+            return None
+    length = len( data )
+    weights_sum = 0
+    squared_weights_sum = 0
+    for i in range(length):
+        weights_sum = weights_sum + weights[i]
+        squared_weights_sum = squared_weights_sum + ( weights[i] ** 2 )
+    denominator = weighted_standard_deviation(
+        data = data,
+        weights = weights,
+        from_sample = from_sample
+    ) ** 4
+    denominator = denominator * weights_sum
+    data_mean = weighted_mean( 
+        data = data,
+        weights = weights
+     )
+    nominator = 0
+    for i in range(length):
+        nominator = nominator + weights[i] * ( ( data[i] - data_mean ) ** 4 )
+    if from_sample:
+        return ( ( weighted_kurtosis(
+            data = data,
+            weights = weights,
+            from_sample = False
+        ) - 3) +3 ) * ( weights_sum / ( weights_sum - ( squared_weights_sum / weights_sum ) ) )
+    else:
+        return nominator / denominator
