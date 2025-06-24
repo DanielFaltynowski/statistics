@@ -10,7 +10,7 @@ Your goal is to formulate each hypothesis clearly, test it using appropriate sta
 
 ## 🧪 Task Description
 
-You are provided with a dataset containing detailed information about football players, including their age, market value, nationality, position, overall rating, and skill attributes. The data is available here: (https://www.kaggle.com/datasets/mukeshmanral/fifa-data-for-eda-and-stats/data)[https://www.kaggle.com/datasets/mukeshmanral/fifa-data-for-eda-and-stats/data].
+You are provided with a dataset containing detailed information about football players, including their age, market value, nationality, position, overall rating, and skill attributes. The data is available here: [https://www.kaggle.com/datasets/mukeshmanral/fifa-data-for-eda-and-stats/data](https://www.kaggle.com/datasets/mukeshmanral/fifa-data-for-eda-and-stats/data).
 
 Your task is to verify the following three research claims using hypothesis testing:
 
