@@ -195,6 +195,15 @@ def data_range(data: list[float]) -> tuple[float]:
     return (min_value, max_value)
 
 
+def standard_error(data: list[float]) -> float:
+    for datum in data:
+        if not isinstance(datum, (int, float)):
+            print('Invalid input: `standard_error(data)`')
+            return None
+    length = len(data)
+    return standard_deviation(data = data) / ( length ** 0.5 )
+
+
 def weighted_mean( data: list[ float ], weights: list[int] ) -> float:
     for datum in data:
         if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
@@ -380,3 +389,18 @@ def weighted_mode(data: list[float], weights: list[int]) -> float:
         return modes
     else:
         return mode
+
+
+def weighted_standard_error(data: list[float], weights: list[int]) -> float:
+    for datum in data:
+        if not ( isinstance(datum, (int, float)) and len(data) == len(weights) ):
+            print('Invalid input: `weighted_standard_error(data)`')
+            return None
+    for weight in weights:
+        if not ( isinstance(weight, (int, float)) and weight >= 0 ):
+            print('Invalid input: `weighted_standard_error(data)`')
+            return None
+    sum_of_weights = 0
+    for weight in weights:
+        sum_of_weights = sum_of_weights + weight
+    return weighted_standard_deviation(data = data, weights = weights) / ( len(data) ** 0.5 )

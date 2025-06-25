@@ -1,0 +1,5 @@
+t-test
+z-test
+ANOVA
+test chi-square
+test shapiro-wilka
