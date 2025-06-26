@@ -55,10 +55,9 @@ $$
 
 $$
 \text{median}(x) = 
-\begin{cases}
-x.\text{sort}_{\frac{n-1}{2}}, & \text{if } n \text{ is odd} \\
-\displaystyle\frac{x.\text{sort}_{\frac{n-1}{2}} + x.\text{sort}_{\frac{n-1}{2} + 1}}{2}, & \text{if } n \text{ is even}
-\end{cases}
+
+x.\text{sort}_{\frac{n-1}{2}}\text{ if } n \text{ is odd, else } \displaystyle\frac{x.\text{sort}_{\frac{n-1}{2}} + x.\text{sort}_{\frac{n-1}{2} + 1}}{2}
+
 $$
 
 - `mode(data: list[float]) -> float | list[float] | None`
