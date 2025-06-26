@@ -38,7 +38,8 @@ def dependent_samples_t_statistic(differences: list[float]) -> float:
     return ( mean(data = differences) - 0 ) / ( standard_deviation(data = differences) / ( length ** 0.5 ) )
 
 
-def one_sample_t_test(sample: list[float], population_mean: float, degrees_of_freedom: int) -> float:
+def one_sample_t_test(sample: list[float], population_mean: float) -> dict:
+    degrees_of_freedom = len(sample) - 1
     t = one_sample_t_statistic(
         sample = sample,
         population_mean = population_mean
@@ -51,6 +52,46 @@ def one_sample_t_test(sample: list[float], population_mean: float, degrees_of_fr
                 degrees_of_freedom = degrees_of_freedom
             ),
             x = absolute_value(t)
-        ) )
+        ) ),
+        'degrees_of_freedom': degrees_of_freedom
+    }
+    return response
+
+
+def independent_samples_t_test(sample_one: list[float], sample_two: list[float]) -> dict:
+    degrees_of_freedom = ( len(sample_one) + len(sample_two) ) - 2
+    t = independent_samples_t_statistics(
+        sample_one = sample_one,
+        sample_two = sample_two
+    )
+    response = {
+        't-statictics': t,
+        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+            distribution = lambda x: t_student_distribution(
+                x = x,
+                degrees_of_freedom = degrees_of_freedom
+            ),
+            x = absolute_value(t)
+        ) ),
+        'degrees_of_freedom': degrees_of_freedom
+    }
+    return response
+
+
+def dependent_samples_t_test(differences: list[float]) -> dict:
+    degrees_of_freedom = len(differences) - 1
+    t = dependent_samples_t_statistic(
+        differences = differences
+    )
+    response = {
+        't-statictics': t,
+        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+            distribution = lambda x: t_student_distribution(
+                x = x,
+                degrees_of_freedom = degrees_of_freedom
+            ),
+            x = absolute_value(t)
+        ) ),
+        'degrees_of_freedom': degrees_of_freedom
     }
     return response
