@@ -33,3 +33,40 @@ $$\text{centralMoment}(x, k, \text{df}) = \frac{1}{n - \Delta\text{df}}\displays
 
 $$\text{standardisedMoment}(x, k, \text{df}) = \frac{1}{(n - \Delta\text{df}) \times \sigma^{k}}\displaystyle\sum_{i=0}^{n-1}{(x_i - \mu)^k}$$
 
+
+### Central Tendency
+
+- `mean(data: list[float]) -> float`
+
+    - Symbol $x$: `data`
+    - Symbol $n$: `len(data)`
+
+$$
+\text{mean}(x) = \text{populationMean}(x) = \mu = \frac{1}{n} \sum_{i=0}^{n-1}{x_i}
+$$
+$$
+\text{mean}(x) = \text{sampleMean}(x) = \overline{x} = \frac{1}{n} \sum_{i=0}^{n-1}{x_i}
+$$
+
+- `median(data: list[float]) -> float`
+
+    - Symbol $x$: `data`
+    - Symbol $n$: `len(data)`
+
+$$
+\text{median}(x) = 
+\begin{cases}
+x.\text{sort}_{\frac{n-1}{2}}, & \text{if } n \text{ is odd} \\
+\displaystyle\frac{x.\text{sort}_{\frac{n-1}{2}} + x.\text{sort}_{\frac{n-1}{2} + 1}}{2}, & \text{if } n \text{ is even}
+\end{cases}
+$$
+
+- `mode(data: list[float]) -> float | list[float] | None`
+
+    - Symbol $x$: `data`
+    - Symbol $n$: `len(data)`
+    - Symbol $\#(x_i)$: the count of occurrences of element $x_i$ in the dataset
+
+$$
+\text{mode}(x) = \left\{ x_i \,\middle|\, \#(x_i) = \max_j \#(x_j) \right\}
+$$
