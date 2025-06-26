@@ -67,5 +67,5 @@ $$
     - Symbol $n$: `len(data)`
 
 $$
-\text{mode}(x) = \left\{ x_i \bigg| x_i.\text{count} = \max_j (x_j.\text{count}) \right\}
+\text{mode}(x) = \bigg\{ x_i \bigg| x_i.\text{count} = \max_j (x_j.\text{count}) \bigg\}
 $$
