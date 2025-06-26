@@ -20,7 +20,7 @@ $$\text{moment}(x, k, \text{df}) = \frac{1}{n - \Delta\text{df}}\displaystyle\su
     - $n = $ `len(data)`
     - $\mu = $ `mean(data)`
 
-$$\text{central_moment}(x, k, \text{df}) = \frac{1}{n - \Delta\text{df}}\displaystyle\sum_{i=0}^{n-1}{(x_i - \mu)^k}$$
+$$\text{centralMoment}(x, k, \text{df}) = \frac{1}{n - \Delta\text{df}}\displaystyle\sum_{i=0}^{n-1}{(x_i - \mu)^k}$$
 
 - `standardised_moment(data: list[float], order: int = 1, delta_degrees_of_freedom: int = 0) -> float`
 
@@ -31,5 +31,5 @@ $$\text{central_moment}(x, k, \text{df}) = \frac{1}{n - \Delta\text{df}}\display
     - $\mu = $ `mean(data)`
     - $\sigma = $ `standard_deviation(data)`
 
-$$\text{standardised_moment}(x, k, \text{df}) = \frac{1}{(n - \Delta\text{df}) \times \sigma^{k}}\displaystyle\sum_{i=0}^{n-1}{(x_i - \mu)^k}$$
+$$\text{standardisedMoment}(x, k, \text{df}) = \frac{1}{(n - \Delta\text{df}) \times \sigma^{k}}\displaystyle\sum_{i=0}^{n-1}{(x_i - \mu)^k}$$
 
