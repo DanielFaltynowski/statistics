@@ -28,3 +28,4 @@ To use the library, you need:
 git clone https://github.com/DanielFaltynowski/statistics.git  
 cd statistics  
 pip install -r requirements.txt  
+```
