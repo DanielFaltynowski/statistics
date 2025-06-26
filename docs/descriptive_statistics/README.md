@@ -65,8 +65,7 @@ $$
 
     - Symbol $x$: `data`
     - Symbol $n$: `len(data)`
-    - Symbol $\#(x_i)$: the count of occurrences of element $x_i$ in the dataset
 
 $$
-\text{mode}(x) = \left\{ x_i \,\middle|\, \#(x_i) = \max_j \#(x_j) \right\}
+\text{mode}(x) = \left\{ x_i \bigg| x_i.\text{count} = \max_j (x_j.\text{count}) \right\}
 $$
