@@ -7,8 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-f = lambda x: 4 * x ** 2
+f = lambda x: x ** 3
 
-print(ucalc.integral_rectangles_method(f, 0, 3))
-print(ucalc.integral_trapezoidal_method(f, 0, 3))
-print(ucalc.integral_simpsons_method(f, 0, 3))
+X = np.linspace(-5, 5, 1000)
+Y = [ dist.t_student_distribution(x, 10 - 1) for x in X ]

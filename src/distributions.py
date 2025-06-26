@@ -1,4 +1,5 @@
 from src.constants import pi, e
+from src.univariate_calculus import gamma_function
 
 
 def uniform_distribution(x: float, a: float, b: float):
@@ -16,7 +17,7 @@ def uniform_distribution(x: float, a: float, b: float):
 
 def normal_distribution(x: float, mean: float, standard_deviation: float) -> float:
     if not isinstance(x, (int, float)) or not isinstance(mean, (int, float)) or not isinstance(standard_deviation, (int, float)):
-        print('Invalid input: `uniform_distribution(x, a, b)`')
+        print('Invalid input: `normal_distribution`')
         return None
     return ( 1 / ( ( 2 * pi() * ( standard_deviation ** 2 ) ) ** 0.5 ) ) * \
           ( e() ** ( -1 * ( ( (x - mean) ** 2 ) / ( 2 * ( standard_deviation ** 2 ) ) ) ) )
@@ -24,9 +25,15 @@ def normal_distribution(x: float, mean: float, standard_deviation: float) -> flo
 
 def exponential_distribution(x: float, parameter_lambda: float) -> float:
     if not isinstance(x, (int, float)) or not isinstance(parameter_lambda, (int, float)):
-        print('Invalid input: `uniform_distribution(x, a, b)`')
+        print('Invalid input: `exponential_distribution`')
         return None
     if x < 0:
         return 0
     else:
         return parameter_lambda * ( e() ** ( -1 * parameter_lambda * x ) )
+
+
+def t_student_distribution(x: float, degrees_of_freedom: int):
+    return ( ( gamma_function( (degrees_of_freedom + 1) / 2 ) / \
+            ( gamma_function( degrees_of_freedom / 2 ) * ( ( degrees_of_freedom * pi() ) ** 0.5) ) ) ) * \
+            ( ( 1 + ( ( x ** 2 ) / degrees_of_freedom ) ) ** ( -1 * ( ( degrees_of_freedom + 1 ) / 2 ) ) )

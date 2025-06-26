@@ -1,3 +1,6 @@
+from src.constants import e
+
+
 def derivative(f, x: float, delta_x: float = 0.0001) -> float:
     return ( f(x + delta_x) - f(x) ) / delta_x
 
@@ -35,3 +38,13 @@ def integral_simpsons_method(f, a: float, b: float, n: int = 100000) -> float:
     area = area * ( delta_x / 3 )
     return area
 
+
+def gamma_function(x: float) -> float:
+    def integrand(t: float, x: float = x) -> float:
+        return ( t ** (x - 1) ) * e(-t)
+    return integral_simpsons_method(
+        f = integrand,
+        a = 0.00000001,
+        b = 50,
+        n = 1000
+    )
