@@ -1,4 +1,6 @@
 from src.descriptive_statistics import mean, variance, standard_deviation
+from src.distributions import cummulative_distribution_function, t_student_distribution
+from src.univariate_calculus import absolute_value
 
 
 def benjamini_hockberg_method(p_values: list[float]) -> list[float]:
@@ -34,3 +36,21 @@ def independent_samples_t_statistics(sample_one: list[float], sample_two: list[f
 def dependent_samples_t_statistic(differences: list[float]) -> float:
     length = len(differences)
     return ( mean(data = differences) - 0 ) / ( standard_deviation(data = differences) / ( length ** 0.5 ) )
+
+
+def one_sample_t_test(sample: list[float], population_mean: float, degrees_of_freedom: int) -> float:
+    t = one_sample_t_statistic(
+        sample = sample,
+        population_mean = population_mean
+    )
+    response = {
+        't-statictics': t,
+        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+            distribution = lambda x: t_student_distribution(
+                x = x,
+                degrees_of_freedom = degrees_of_freedom
+            ),
+            x = absolute_value(t)
+        ) )
+    }
+    return response

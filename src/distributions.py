@@ -1,5 +1,5 @@
 from src.constants import pi, e
-from src.univariate_calculus import gamma_function
+from src.univariate_calculus import gamma_function, integral_simpsons_method
 
 
 def uniform_distribution(x: float, a: float, b: float):
@@ -37,3 +37,12 @@ def t_student_distribution(x: float, degrees_of_freedom: int):
     return ( ( gamma_function( (degrees_of_freedom + 1) / 2 ) / \
             ( gamma_function( degrees_of_freedom / 2 ) * ( ( degrees_of_freedom * pi() ) ** 0.5) ) ) ) * \
             ( ( 1 + ( ( x ** 2 ) / degrees_of_freedom ) ) ** ( -1 * ( ( degrees_of_freedom + 1 ) / 2 ) ) )
+
+
+def cummulative_distribution_function(distribution, x: float, start_point: float = -100, n: int = 1000):
+    return integral_simpsons_method(
+        f = distribution,
+        a = start_point,
+        b = x,
+        n = n
+    )

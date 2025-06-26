@@ -1,6 +1,13 @@
 from src.constants import e
 
 
+def absolute_value(x:float):
+    if x >= 0:
+        return x
+    else:
+        return -1 * x
+
+
 def derivative(f, x: float, delta_x: float = 0.0001) -> float:
     return ( f(x + delta_x) - f(x) ) / delta_x
 
