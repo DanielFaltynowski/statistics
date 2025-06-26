@@ -5,7 +5,7 @@
 
 - `moment(data: list[float], order: int = 1, delta_degrees_of_freedom: int = 0) -> float`
 
-    - $x = $ `data`
+    - Symbol $x$ means `data`
     - $k = $ `order`
     - $\Delta\text{df} = $ `delta_degrees_of_freedom`
     - $n = $ `len(data)`
