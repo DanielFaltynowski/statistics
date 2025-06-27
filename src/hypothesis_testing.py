@@ -96,42 +96,43 @@ def dependent_samples_t_test(differences: list[float]) -> dict:
     }
     return response
 
-# def one_sample_t_statistic(sample: list[float], population_mean: float) -> float:
-#     length = len(sample)
-#     return ( mean(data = sample) - population_mean ) / ( standard_deviation(data = sample) / ( length ** 0.5 ) )
+
+def one_sample_z_statistic(sample: list[float], population_mean: float, population_standard_deviation: float = None) -> float:
+    if population_standard_deviation is None:
+        return one_sample_t_statistic(
+            sample = sample,
+            population_mean = population_mean
+        )
+    else:
+        length = len(sample)
+        return ( mean(data = sample) - population_mean ) / ( population_standard_deviation / ( length ** 0.5 ) )
 
 
-# def independent_samples_t_statistics(sample_one: list[float], sample_two: list[float]) -> float:
-#     length_one = len(sample_one)
-#     length_two = len(sample_two)
-#     return ( mean(sample_one) - mean(sample_two) ) / \
-#            ( ( variance(sample_one) / length_one + variance(sample_two) / length_two ) ** 0.5 )
+def independent_samples_z_statistics(sample_one: list[float], sample_two: list[float], population_standard_deviation_one: float = None, population_standard_deviation_two: float = None) -> float:
+    if population_standard_deviation_one is None or population_standard_deviation_two is None:
+        return independent_samples_t_statistics(
+            sample_one = sample_one,
+            sample_two = sample_two
+        )
+    else:
+        length_one = len(sample_one)
+        length_two = len(sample_two)
+        return ( mean(sample_one) - mean(sample_two) ) / \
+            ( ( ( population_standard_deviation_one ** 2 ) \
+                / length_one + ( population_standard_deviation_two ** 2 ) / length_two ) ** 0.5 )
 
 
-# def dependent_samples_t_statistic(differences: list[float]) -> float:
-#     length = len(differences)
-    # return ( mean(data = differences) - 0 ) / ( standard_deviation(data = differences) / ( length ** 0.5 ) )
+def dependent_samples_z_statistic(differences: list[float], differences_standard_deviation: float = None) -> float:
+    if differences_standard_deviation is None:
+        return dependent_samples_t_statistic(
+            differences = differences
+        )
+    else:
+        length = len(differences)
+        return ( mean(data = differences) - 0 ) / ( differences_standard_deviation / ( length ** 0.5 ) )
 
 
-def one_sample_z_statistic(sample: list[float], population_mean: float, population_standard_deviation: float) -> float:
-    length = len(sample)
-    return ( mean(data = sample) - population_mean ) / ( population_standard_deviation / ( length ** 0.5 ) )
-
-
-def independent_samples_z_statistics(sample_one: list[float], sample_two: list[float], population_standard_deviation_one: float, population_standard_deviation_two: float) -> float:
-    length_one = len(sample_one)
-    length_two = len(sample_two)
-    return ( mean(sample_one) - mean(sample_two) ) / \
-           ( ( ( population_standard_deviation_one ** 2 ) \
-            / length_one + ( population_standard_deviation_two ** 2 ) / length_two ) ** 0.5 )
-
-
-def dependent_samples_z_statistic(differences: list[float], differences_standard_deviation: float) -> float:
-    length = len(differences)
-    return ( mean(data = differences) - 0 ) / ( differences_standard_deviation / ( length ** 0.5 ) )
-
-
-def one_sample_z_test(sample: list[float], population_mean: float, population_standard_deviation: float) -> dict:
+def one_sample_z_test(sample: list[float], population_mean: float, population_standard_deviation: float = None) -> dict:
     degrees_of_freedom = len(sample)
     z = one_sample_z_statistic(
         sample = sample,
@@ -153,7 +154,7 @@ def one_sample_z_test(sample: list[float], population_mean: float, population_st
     return response
 
 
-def independent_samples_z_test(sample_one: list[float], sample_two: list[float], population_standard_deviation_one: float, population_standard_deviation_two: float) -> dict:
+def independent_samples_z_test(sample_one: list[float], sample_two: list[float], population_standard_deviation_one: float = None, population_standard_deviation_two: float = None) -> dict:
     degrees_of_freedom = ( len(sample_one) + len(sample_two) )
     z = independent_samples_z_statistics(
         sample_one = sample_one,
@@ -176,7 +177,7 @@ def independent_samples_z_test(sample_one: list[float], sample_two: list[float],
     return response
 
 
-def dependent_samples_z_test(differences: list[float], differences_standard_deviation: float) -> dict:
+def dependent_samples_z_test(differences: list[float], differences_standard_deviation: float = None) -> dict:
     degrees_of_freedom = len(differences)
     z = dependent_samples_z_statistic(
         differences = differences,
