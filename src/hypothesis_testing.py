@@ -1,6 +1,7 @@
 from src.descriptive_statistics import mean, variance, standard_deviation
-from src.distributions import cummulative_distribution_function, t_student_distribution, normal_distribution
+from src.distributions import continuous_cummulative_distribution_function, discrete_cummulative_distribution_function, t_student_distribution, normal_distribution
 from src.univariate_calculus import absolute_value
+from src.constants import e
 
 
 def benjamini_hockberg_method(p_values: list[float]) -> list[float]:
@@ -47,7 +48,7 @@ def one_sample_t_test(sample: list[float], population_mean: float) -> dict:
     )
     response = {
         't-statictics': t,
-        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+        'p-value': 2 * ( 1 - continuous_cummulative_distribution_function( 
             distribution = lambda x: t_student_distribution(
                 x = x,
                 degrees_of_freedom = degrees_of_freedom
@@ -69,7 +70,7 @@ def independent_samples_t_test(sample_one: list[float], sample_two: list[float])
     )
     response = {
         't-statictics': t,
-        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+        'p-value': 2 * ( 1 - continuous_cummulative_distribution_function( 
             distribution = lambda x: t_student_distribution(
                 x = x,
                 degrees_of_freedom = degrees_of_freedom
@@ -89,7 +90,7 @@ def dependent_samples_t_test(differences: list[float]) -> dict:
     )
     response = {
         't-statictics': t,
-        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+        'p-value': 2 * ( 1 - continuous_cummulative_distribution_function( 
             distribution = lambda x: t_student_distribution(
                 x = x,
                 degrees_of_freedom = degrees_of_freedom
@@ -148,7 +149,7 @@ def one_sample_z_test(sample: list[float], population_mean: float, population_st
     )
     response = {
         'z-statictics': z,
-        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+        'p-value': 2 * ( 1 - continuous_cummulative_distribution_function( 
             distribution = lambda x: normal_distribution(
                 x = x,
                 mean = 0,
@@ -175,7 +176,7 @@ def independent_samples_z_test(sample_one: list[float], sample_two: list[float],
     )
     response = {
         'z-statictics': z,
-        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+        'p-value': 2 * ( 1 - continuous_cummulative_distribution_function( 
             distribution = lambda x: normal_distribution(
                 x = x,
                 mean = 0,
@@ -199,7 +200,7 @@ def dependent_samples_z_test(differences: list[float], differences_standard_devi
     )
     response = {
         'z-statictics': z,
-        'p-value': 2 * ( 1 - cummulative_distribution_function( 
+        'p-value': 2 * ( 1 - continuous_cummulative_distribution_function( 
             distribution = lambda x: normal_distribution(
                 x = x,
                 mean = 0,
@@ -208,5 +209,46 @@ def dependent_samples_z_test(differences: list[float], differences_standard_devi
             x = absolute_value(z)
         ) ),
         'degrees_of_freedom': degrees_of_freedom
+    }
+    return response
+
+
+def d_statistics(sample: list[float], distribution):
+    differences = []
+    for datum in sample:
+        differences.append(absolute_value(
+            x = discrete_cummulative_distribution_function(
+                distribution = sample,
+                x = datum
+            ) - continuous_cummulative_distribution_function(
+                distribution = distribution,
+                x = datum
+            )
+        ))
+    maximum_difference = differences[0]
+    for difference in differences:
+        if difference > maximum_difference:
+            maximum_difference = difference
+    return maximum_difference
+
+
+def kolmogorov_function(parameter_lambda: float, end: int = 100):
+    counter = 0
+    for i in range(1, end + 1):
+        counter = counter + ( ( ( -1 ) ** ( i - 1)) * e( -2 * ( i ** 2 ) * ( parameter_lambda ** 2 ) ) )
+    return 2 * counter
+
+
+def kolmogorov_smirnov_test(empirical_distribution: list[float], theoritical_distribution: list[float]):
+    length = len(empirical_distribution)
+    d = d_statistics(
+        sample = empirical_distribution,
+        distribution = theoritical_distribution
+    )
+    response = {
+        'd-statistics': d,
+        'p-value': kolmogorov_function(
+            parameter_lambda = d * ( length ** 0.5 )
+        )
     }
     return response

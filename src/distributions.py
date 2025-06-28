@@ -39,7 +39,17 @@ def t_student_distribution(x: float, degrees_of_freedom: int):
             ( ( 1 + ( ( x ** 2 ) / degrees_of_freedom ) ) ** ( -1 * ( ( degrees_of_freedom + 1 ) / 2 ) ) )
 
 
-def cummulative_distribution_function(distribution, x: float, start_point: float = -100, n: int = 1000):
+def discrete_cummulative_distribution_function(distribution: list[float], x: float):
+    length = len(distribution)
+    denominator = length
+    nominator = 0
+    for datum in distribution:
+        if datum <= x:
+            nominator = nominator + 1
+    return nominator / denominator
+
+
+def continuous_cummulative_distribution_function(distribution, x: float, start_point: float = -100, n: int = 1000):
     return integral_simpsons_method(
         f = distribution,
         a = start_point,
