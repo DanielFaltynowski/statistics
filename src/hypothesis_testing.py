@@ -39,7 +39,8 @@ def dependent_samples_t_statistic(differences: list[float]) -> float:
 
 
 def one_sample_t_test(sample: list[float], population_mean: float) -> dict:
-    degrees_of_freedom = len(sample) - 1
+    length = len(sample)
+    degrees_of_freedom = length - 1
     t = one_sample_t_statistic(
         sample = sample,
         population_mean = population_mean
@@ -59,7 +60,9 @@ def one_sample_t_test(sample: list[float], population_mean: float) -> dict:
 
 
 def independent_samples_t_test(sample_one: list[float], sample_two: list[float]) -> dict:
-    degrees_of_freedom = ( len(sample_one) + len(sample_two) ) - 2
+    length_one = len(sample_one)
+    length_two = len(sample_two)
+    degrees_of_freedom = ( length_one + length_two ) - 2
     t = independent_samples_t_statistics(
         sample_one = sample_one,
         sample_two = sample_two
@@ -79,7 +82,8 @@ def independent_samples_t_test(sample_one: list[float], sample_two: list[float])
 
 
 def dependent_samples_t_test(differences: list[float]) -> dict:
-    degrees_of_freedom = len(differences) - 1
+    length = len(differences)
+    degrees_of_freedom = length - 1
     t = dependent_samples_t_statistic(
         differences = differences
     )
@@ -133,7 +137,10 @@ def dependent_samples_z_statistic(differences: list[float], differences_standard
 
 
 def one_sample_z_test(sample: list[float], population_mean: float, population_standard_deviation: float = None) -> dict:
-    degrees_of_freedom = len(sample)
+    length = len(sample)
+    degrees_of_freedom = length
+    if population_standard_deviation is None:
+        degrees_of_freedom = degrees_of_freedom - 1
     z = one_sample_z_statistic(
         sample = sample,
         population_mean = population_mean,
@@ -155,7 +162,11 @@ def one_sample_z_test(sample: list[float], population_mean: float, population_st
 
 
 def independent_samples_z_test(sample_one: list[float], sample_two: list[float], population_standard_deviation_one: float = None, population_standard_deviation_two: float = None) -> dict:
-    degrees_of_freedom = ( len(sample_one) + len(sample_two) )
+    length_one = len(sample_one)
+    length_two = len(sample_two)
+    degrees_of_freedom = ( length_one + length_two )
+    if population_standard_deviation_one is None and population_standard_deviation_two is None:
+        degrees_of_freedom = degrees_of_freedom - 2
     z = independent_samples_z_statistics(
         sample_one = sample_one,
         sample_two = sample_two,
@@ -178,7 +189,10 @@ def independent_samples_z_test(sample_one: list[float], sample_two: list[float],
 
 
 def dependent_samples_z_test(differences: list[float], differences_standard_deviation: float = None) -> dict:
-    degrees_of_freedom = len(differences)
+    length = len(differences)
+    degrees_of_freedom = length
+    if differences_standard_deviation is None:
+        degrees_of_freedom = degrees_of_freedom - 1
     z = dependent_samples_z_statistic(
         differences = differences,
         differences_standard_deviation = differences_standard_deviation

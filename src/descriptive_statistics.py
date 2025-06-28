@@ -124,7 +124,7 @@ def kurtosis( data: list[ float ], from_sample: bool = True ) -> float:
     if from_sample:
         nominator = nominator * length * ( length + 1 )
         denominator = denominator * ( length - 1 ) * ( length - 2 ) * ( length - 3 )
-        substractor = ( ( 3 * ( ( length - 1 ) ** 2 ) ) / ( ( length - 2 ) * ( length - 3 ) ) )
+        substractor = ( ( 3 * ( ( length - 1 ) ** 2 ) ) / ( ( length - 2 ) * ( length - 3 ) ) ) - 3
     else:
         denominator = denominator * len( data )
     return ( nominator / denominator ) - substractor
@@ -329,7 +329,7 @@ def weighted_kurtosis( data: list[ float ], weights: list[int], from_sample: boo
             data = data,
             weights = weights,
             from_sample = False
-        ) - 3) +3 ) * ( weights_sum / ( weights_sum - ( squared_weights_sum / weights_sum ) ) )
+        ) - 3) + 3 ) * ( weights_sum / ( weights_sum - ( squared_weights_sum / weights_sum ) ) )
     else:
         return nominator / denominator
 

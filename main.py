@@ -1,2 +1,2 @@
+import tests.test_descriptive_statistics
 import tests.test_hypothesis_testing
-
