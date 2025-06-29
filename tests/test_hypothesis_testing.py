@@ -1,4 +1,5 @@
 import src.hypothesis_testing as ht
+import src.distributions as dist
 import src.descriptive_statistics as ds
 
 import numpy as np
@@ -318,4 +319,52 @@ print('My Library:       ', ht.dependent_samples_z_test(
 print('Python Library:   ', statsmodels.stats.weightstats.ztest(
     x1 = after,
     x2 = before
+), '\n')
+
+
+# Distribution Testing using Kolmogorov-Smirnov Test (p_value >= 0.05, the same distribution)
+
+normal_distribution = np.random.normal(
+    loc = 50,
+    scale = 5,
+    size = 100
+)
+
+print('Distribution Testing using Kolmogorov-Smirnov Test (p_value >= 0.05, the same distribution')
+print('My Library:       ', ht.kolmogorov_smirnov_test(
+    empirical_distribution = normal_distribution,
+    theoritical_distribution = lambda x: dist.normal_distribution(
+        x = x,
+        mean = 50,
+        standard_deviation = 5
+    )
+))
+print('Python Library:   ', scipy.stats.kstest(
+    rvs = normal_distribution,
+    cdf = 'norm',
+    args = ( 50, 5 )
+), '\n')
+
+
+# Distribution Testing using Kolmogorov-Smirnov Test (p_value > 0.05, different distributions)
+
+normal_distribution = np.random.normal(
+    loc = 50,
+    scale = 5,
+    size = 100
+)
+
+print('Distribution Testing using Kolmogorov-Smirnov Test (p_value >= 0.05, the same distribution')
+print('My Library:       ', ht.kolmogorov_smirnov_test(
+    empirical_distribution = normal_distribution,
+    theoritical_distribution = lambda x: dist.normal_distribution(
+        x = x,
+        mean = 55,
+        standard_deviation = 4
+    )
+))
+print('Python Library:   ', scipy.stats.kstest(
+    rvs = normal_distribution,
+    cdf = 'norm',
+    args = ( 55, 4 )
 ), '\n')
