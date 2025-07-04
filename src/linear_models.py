@@ -34,7 +34,7 @@ def residual_sum_of_squares(Y_observed: list[float], Y_predicted: list[float]) -
     length = len(Y_observed)
     response = 0
     for i in range(length):
-        response = response + ( ( Y_observed - Y_predicted ) ** 2 )
+        response = response + ( ( Y_observed[i] - Y_predicted[i] ) ** 2 )
     return response
 
 
