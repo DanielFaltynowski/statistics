@@ -1,3 +1,4 @@
-import tests.test_descriptive_statistics
-import tests.test_hypothesis_testing
-import tests.test_bootstrapping
+# import tests.test_descriptive_statistics
+# import tests.test_hypothesis_testing
+# import tests.test_bootstrapping
+import tests.test_linear_models
