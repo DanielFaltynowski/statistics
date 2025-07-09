@@ -55,3 +55,22 @@ def gamma_function(x: float) -> float:
         b = 50,
         n = 1000
     )
+
+
+def factorial(n: int) -> float:
+    response = 1
+    for i in range(1, n + 1):
+        response = response * i
+    return response / 1
+
+
+def newton_symbol(n: int, k: int) -> float:
+    nominator = factorial(
+        n = n
+    )
+    denominator = factorial(
+        n = k
+    ) * factorial(
+        n = n - k
+    )
+    return nominator / denominator

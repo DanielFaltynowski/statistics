@@ -1,5 +1,5 @@
 from src.constants import pi, e
-from src.univariate_calculus import gamma_function, integral_simpsons_method
+from src.univariate_calculus import gamma_function, integral_simpsons_method, newton_symbol
 
 
 def uniform_distribution(x: float, a: float, b: float):
@@ -56,3 +56,10 @@ def continuous_cummulative_distribution_function(distribution, x: float, start_p
         b = x,
         n = n
     )
+
+
+def binomial_distribution(x: int, all_events: int, positive_probability: float) -> float:
+    return newton_symbol(
+        n = all_events,
+        k = x
+    ) * ( positive_probability ** x ) * ( ( 1 - positive_probability ) ** ( all_events - x ) )
